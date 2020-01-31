@@ -16,6 +16,18 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    install -g @angular/cli
     npm install
     npm run build
   displayName: 'npm install and build'
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Microsoft Azure Internal Consumption(1)(fbb69af7-f9a0-4e69-ba10-b4eb445e3963)'
+    appType: 'webAppLinux'
+    WebAppName: 'nginxrepo'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    RuntimeStack: 'NODE|lts'
+    ScriptType: 'Inline Script'
+    InlineScript: ':: You can provide your deployment commands here. One command per line.'
